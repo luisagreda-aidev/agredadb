@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Agreda Gonzalez"
+  given-names: "Luis Eduardo"
+  email: "luisagreda.ai@gmail.com"
+  country: "VE"
+title: "AgredaDB: The World's First NVMe-Native Multi-modal Database for AI"
+version: 3.0.0
+date-released: 2026-01-17
+url: "https://github.com/luisagreda/agredadb"
+license: AGPL-3.0

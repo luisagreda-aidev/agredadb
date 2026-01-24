@@ -1,0 +1,31 @@
+[package]
+name = "agredadb_hnsw"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "HNSW (Hierarchical Navigable Small World) index for AgredaDB"
+
+[dependencies]
+# Core
+serde = { workspace = true }
+parking_lot = { workspace = true }
+ahash = { workspace = true }
+
+# Performance
+wide = { workspace = true }
+rayon = "1.10"
+ordered-float = "4.2"
+rand = "0.8"
+
+# Logging
+log = "0.4"
+
+[dev-dependencies]
+rand = "0.8"
+criterion = "0.5"
+
+[lib]
+name = "agredadb_hnsw"
+path = "src/lib.rs"

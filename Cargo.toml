@@ -1,0 +1,47 @@
+[workspace]
+members = [
+    "server",
+    "dbms",     # New DBMS Engine
+    "wal",
+    "storage",
+    "security",
+    # "index"   # Legacy HNSW is deprecated/optional now
+]
+resolver = "2"
+
+[workspace.package]
+version = "3.0.0"
+edition = "2021"
+authors = ["Luis Eduardo Agreda Gonzalez <luisagreda.ai@gmail.com>"]
+license = "AGPL-3.0"
+repository = "https://github.com/luisagreda-aidev/agredadb"
+
+[workspace.dependencies]
+# Core dependencies
+arrow = { version = "53.0", features = ["ipc"] }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async runtime
+glommio = "0.9"
+futures = "0.3"
+
+# Performance
+wide = "0.7"
+ahash = "0.8"
+parking_lot = "0.12"
+lru = "0.12"
+rayon = "1.10"
+
+# Distributed
+raft = "0.7"
+
+# ML
+ort = "1.16"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+opt-level = 3

@@ -1,0 +1,29 @@
+[package]
+name = "agredadb_wal"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Write-Ahead Log (WAL) for AgredaDB with ACID guarantees"
+
+[dependencies]
+# Core
+serde = { workspace = true }
+serde_json = { workspace = true }
+parking_lot = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+glommio = { workspace = true }
+
+# Logging
+log = "0.4"
+
+[dev-dependencies]
+rand = "0.8"
+tempfile = "3.8"
+
+[lib]
+name = "agredadb_wal"
+path = "src/lib.rs"

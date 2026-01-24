@@ -1,0 +1,45 @@
+[package]
+name = "agredadb_dbms"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Core
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+log = "0.4"
+ordered-float = "4.0"
+rayon = { workspace = true }
+rkyv = { version = "0.7", features = ["validation"] }
+bytecheck = "0.6" 
+flume = "0.11"
+async-trait = "0.1"
+futures = { workspace = true }
+uuid = { version = "1.4", features = ["v4"] }
+
+# DataFusion (SQL & SIMD)
+datafusion = "42.0.0" 
+arrow = { workspace = true }
+
+# Indexing & Storage
+parking_lot = { workspace = true }
+memmap2 = "0.9"
+rand = "0.8"
+wide = { workspace = true }
+io-uring = "0.6"
+aligned-vec = "0.5"
+tonic = "0.10"
+prost = "0.12" # ADDED
+
+# Storage Link
+agredadb_storage = { path = "../storage" }
+
+[lib]
+name = "agredadb_dbms"
+path = "src/lib.rs"
+
+[build-dependencies]
+tonic-build = "0.10"

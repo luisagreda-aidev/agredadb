@@ -1,0 +1,42 @@
+[package]
+name = "agredadb_storage"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "High-performance Storage for AgredaDB - Kernel Bypass & SIMD Compression"
+
+[dependencies]
+# Core
+serde = { workspace = true }
+serde_json = { workspace = true }
+parking_lot = { workspace = true }
+ahash = { workspace = true }
+lru = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+futures = { workspace = true }
+
+# Storage
+memmap2 = "0.9"
+io-uring = "0.6"
+libc = "0.2"
+aligned-vec = "0.5"
+bitpacking = "0.9"
+wide = { workspace = true }
+rkyv = { version = "0.7", features = ["validation"] }
+bytecheck = "0.6"
+
+# Logging
+log = "0.4"
+tracing = "0.1"
+
+[dev-dependencies]
+tempfile = "3.8"
+rand = "0.8"
+
+[lib]
+name = "agredadb_storage"
+path = "src/lib.rs"

@@ -1,0 +1,71 @@
+[package]
+name = "agredadb_server"
+version = "3.0.0"
+edition = "2021"
+
+[[bin]]
+name = "agredadb_server"
+path = "src/main.rs"
+
+[[bin]]
+name = "benchmark"
+path = "src/bin/benchmark.rs"
+
+[[bin]]
+name = "benchmark_1to1_async"
+path = "src/bin/benchmark_1to1_async.rs"
+
+[[bin]]
+name = "benchmark_comprehensive"
+path = "src/bin/benchmark_comprehensive.rs"
+
+[dependencies]
+# --- CORE (Motor) ---
+enclose = "=1.1.8"
+glommio = { workspace = true }
+arrow = { workspace = true }
+base64 = "0.21"
+uuid = { version = "1.4", features = ["v4"] }
+rand = "0.8"
+serde = { workspace = true }
+serde_json = { workspace = true }
+futures = { workspace = true }
+flume = "0.11"
+tokio-stream = "0.1"
+num_cpus = "1.16"
+clap = { version = "4.4", features = ["derive"] }
+env_logger = "0.10"
+log = "0.4"
+tempfile = "3.8"
+hdrhistogram = "7.5"
+
+# --- NETWORK (Servicio) ---
+tonic = "0.10"
+prost = "0.12"
+tokio = { workspace = true }
+
+# --- LOGIC (Inteligencia) ---
+sqlparser = "0.40"
+
+# --- OPTIMIZATIONS ---
+wide = { workspace = true }
+lru = { workspace = true }
+ahash = { workspace = true }
+parking_lot = { workspace = true }
+tikv-jemallocator = "0.5"
+rkyv = { version = "0.7", features = ["validation"] }
+
+# --- PHASE 1 & 2 MODULES ---
+agredadb_dbms = { path = "../dbms" }
+agredadb_wal = { path = "../wal" }
+agredadb_storage = { path = "../storage" }
+agredadb_security = { path = "../security" }
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+opt-level = 3
+
+[build-dependencies]
+tonic-build = "0.10"

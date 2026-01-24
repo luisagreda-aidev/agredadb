@@ -1,0 +1,36 @@
+[package]
+name = "agredadb_security"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "Security and Multi-tenancy for AgredaDB"
+
+[dependencies]
+# Core
+serde = { workspace = true }
+serde_json = { workspace = true }
+parking_lot = { workspace = true }
+ahash = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+
+# Security
+jsonwebtoken = "9.2"
+bcrypt = "0.15"
+ring = "0.17"
+base64 = "0.21"
+uuid = { version = "1.0", features = ["v4"] }
+
+# Logging
+log = "0.4"
+tracing = "0.1"
+
+[dev-dependencies]
+rand = "0.8"
+
+[lib]
+name = "agredadb_security"
+path = "src/lib.rs"

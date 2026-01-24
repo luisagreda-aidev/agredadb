@@ -1,0 +1,90 @@
+syntax = "proto3";
+package agreda;
+
+service Agreda {
+  // Authentication
+  rpc Login (LoginRequest) returns (AuthResponse);
+  rpc CreateUser (CreateUserRequest) returns (AuthResponse);
+
+  // Data Operations (Auth Token required in metadata)
+  rpc Insert (InsertRequest) returns (InsertResponse);
+  rpc InsertBatch (InsertBatchRequest) returns (InsertResponse);
+  rpc Query (QueryRequest) returns (QueryResponse);
+  rpc Search (SearchRequest) returns (SearchResponse);
+
+  // High-Speed Blob Operations (Zero-Copy)
+  rpc UploadBlob (stream BlobChunk) returns (BlobResponse);
+  rpc DownloadBlob (BlobRequest) returns (stream BlobChunk);
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string password = 2;
+  string tenant = 3;
+}
+
+message AuthResponse {
+  bool success = 1;
+  string token = 2;
+  string message = 3;
+}
+
+message InsertRequest {
+  string table = 1;
+  string id = 2; // For consistent sharding
+  string json_data = 3; 
+}
+
+message InsertBatchRequest {
+  string table = 1;
+  repeated string json_data_list = 2;
+}
+
+message InsertResponse {
+  bool success = 1;
+  string message = 2;
+  uint32 records_processed = 3;
+}
+
+message QueryRequest {
+  string sql = 1; 
+}
+
+message QueryResponse {
+  bytes arrow_ipc_stream = 1; 
+}
+
+message SearchRequest {
+  string table = 1;
+  repeated float vector = 2; 
+  uint32 limit = 3;          
+}
+
+message SearchResponse {
+  repeated SearchResult results = 1;
+}
+
+message SearchResult {
+  string id = 1;
+  float score = 2; 
+  string json_data = 3;
+}
+
+message BlobChunk {
+  bytes data = 1;
+  string blob_id = 2;
+}
+
+message BlobRequest {
+  string blob_id = 1;
+}
+
+message BlobResponse {
+  bool success = 1;
+  string blob_id = 2;
+}

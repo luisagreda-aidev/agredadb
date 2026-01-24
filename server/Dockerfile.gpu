@@ -1,0 +1,30 @@
+# Usamos la base oficial de NVIDIA para tener acceso a CUDA 12
+FROM nvidia/cuda:12.3.1-devel-ubuntu22.04 as builder
+
+# Instalar Rust y dependencias de compilación
+RUN apt-get update && apt-get install -y \
+    curl build-essential protobuf-compiler libssl-dev pkg-config
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+WORKDIR /app
+COPY . .
+
+# Compilación con soporte para Hardware Native (AVX, etc)
+RUN RUSTFLAGS="-C target-cpu=native" cargo build --release
+
+# Stage 2: Runtime Minimal con soporte CUDA
+FROM nvidia/cuda:12.3.1-base-ubuntu22.04
+
+WORKDIR /usr/local/bin
+COPY --from=builder /app/target/release/agredadb_server .
+
+# Exponer gRPC
+EXPOSE 19999
+
+# Etiquetas profesionales
+LABEL developer="Luis Eduardo Agreda Gonzalez"
+LABEL version="3.0.0-gpu"
+LABEL description="AgredaDB - AI Optimized Database"
+
+CMD ["./agredadb_server"]
