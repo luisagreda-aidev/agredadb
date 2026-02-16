@@ -28,11 +28,11 @@ pub struct Credentials {
 /// JWT Claims (public for verification)
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-    sub: String,      // User ID
-    username: String,
-    tenant: String,
-    exp: u64,         // Expiration time
-    iat: u64,         // Issued at
+    pub sub: String,      // User ID
+    pub username: String,
+    pub tenant: String,
+    pub exp: u64,         // Expiration time
+    pub iat: u64,         // Issued at
 }
 
 /// Authentication manager
@@ -53,7 +53,7 @@ impl AuthManager {
     }
 
     /// Create user
-    pub async fn create_user(&mut self, username: &str, password: &str, tenant: &str) -> Result<User> {
+    pub async fn create_user(&self, username: &str, password: &str, tenant: &str) -> Result<User> {
         // Check if user exists
         {
             let username_map = self.username_to_id.read();
@@ -183,7 +183,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_user() {
-        let mut auth = AuthManager::new("test_secret");
+        let auth = AuthManager::new("test_secret");
         
         let user = auth.create_user("alice", "password123", "tenant1")
             .await
@@ -196,7 +196,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_authenticate() {
-        let mut auth = AuthManager::new("test_secret");
+        let auth = AuthManager::new("test_secret");
         
         auth.create_user("bob", "secret456", "tenant1")
             .await
@@ -211,7 +211,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_authenticate_wrong_password() {
-        let mut auth = AuthManager::new("test_secret");
+        let auth = AuthManager::new("test_secret");
         
         auth.create_user("charlie", "correct", "tenant1")
             .await
@@ -223,7 +223,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_verify_token() {
-        let mut auth = AuthManager::new("test_secret");
+        let auth = AuthManager::new("test_secret");
         
         auth.create_user("dave", "password", "tenant1")
             .await

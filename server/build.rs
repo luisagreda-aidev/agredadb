@@ -1,4 +1,3 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tonic_build::compile_protos("proto/agreda.proto")?;
-    Ok(())
-}
+// Proto compilation is handled by agredadb_dbms/build.rs.
+// The server imports proto types via agredadb_dbms::agreda_proto.
+fn main() {}

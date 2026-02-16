@@ -38,7 +38,7 @@ pub mod namespace;
 pub mod audit;
 pub mod error;
 
-pub use auth::{AuthManager, User, Credentials};
+pub use auth::{AuthManager, User, Credentials, Claims};
 pub use rbac::{RbacManager, Role, Permission};
 pub use encryption::EncryptionManager;
 pub use namespace::{NamespaceManager, Namespace};
@@ -67,7 +67,7 @@ impl SecurityManager {
     }
 
     /// Create user
-    pub async fn create_user(&mut self, username: &str, password: &str, tenant: &str) -> Result<User> {
+    pub async fn create_user(&self, username: &str, password: &str, tenant: &str) -> Result<User> {
         let user = self.auth.create_user(username, password, tenant).await?;
         self.audit.log(AuditEvent::UserCreated {
             user_id: user.id.clone(),
@@ -110,6 +110,11 @@ impl SecurityManager {
     pub fn decrypt(&self, data: &[u8]) -> Result<Vec<u8>> {
         self.encryption.decrypt(data)
     }
+
+    /// Verify JWT token and return claims
+    pub fn verify_token(&self, token: &str) -> Result<auth::Claims> {
+        self.auth.verify_token(token)
+    }
 }
 
 #[cfg(test)]
@@ -118,7 +123,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_security_manager() {
-        let mut security = SecurityManager::new("test_secret");
+        let security = SecurityManager::new("test_secret");
         
         // Create user
         let user = security.create_user("alice", "password123", "tenant1")
@@ -131,7 +136,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_authentication_flow() {
-        let mut security = SecurityManager::new("test_secret");
+        let security = SecurityManager::new("test_secret");
         
         // Create user
         security.create_user("bob", "secret456", "tenant1")
