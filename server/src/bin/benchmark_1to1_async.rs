@@ -4,18 +4,15 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use tonic::Request;
 use futures::future::join_all;
-
-pub mod agreda_proto {
-    tonic::include_proto!("agreda");
-}
+use agredadb_dbms::agreda_proto;
 
 use agreda_proto::agreda_client::AgredaClient;
 use agreda_proto::InsertRequest;
 
 // CONFIGURACIÓN PARA MODO 1-A-1 CON PIPELINE ASÍNCRONO
-const TOTAL_REQUESTS: usize = 100_000; // 100K requests para test rápido
-const CONCURRENT_PIPELINE: usize = 1000; // 1000 requests en vuelo simultáneamente
-const NUM_CLIENTS: usize = 10; // 10 clientes concurrentes
+const TOTAL_REQUESTS: usize = 1_000_000; 
+const CONCURRENT_PIPELINE: usize = 2000; 
+const NUM_CLIENTS: usize = 40; 
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

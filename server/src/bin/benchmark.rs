@@ -3,10 +3,7 @@ use tokio::task;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use tonic::Request;
-
-pub mod agreda_proto {
-    tonic::include_proto!("agreda");
-}
+use agredadb_dbms::agreda_proto;
 
 use agreda_proto::agreda_client::AgredaClient;
 use agreda_proto::InsertBatchRequest;

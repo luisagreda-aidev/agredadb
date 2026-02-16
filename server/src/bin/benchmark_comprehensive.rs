@@ -5,10 +5,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use tonic::Request;
 use hdrhistogram::Histogram;
 use parking_lot::Mutex;
-
-pub mod agreda_proto {
-    tonic::include_proto!("agreda");
-}
+use agredadb_dbms::agreda_proto;
 
 use agreda_proto::agreda_client::AgredaClient;
 use agreda_proto::InsertRequest;
